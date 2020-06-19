@@ -1,0 +1,30 @@
+#scores {
+    font-size: 15px;
+    border: none;
+    background: none;
+    text-align: left;
+    outline: none;
+    color: blueviolet;
+}
+
+#scores:hover {
+    font-weight: bolder;
+}
+
+#countdown {
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#start,#question-items,#submit {
+    border: none;
+    outline: invert;
+    background-color: blueviolet;
+    color: white;
+    text-decoration: none;
+    list-style: none;
+    text-align: left;
+    align-items: left;
+
+}
