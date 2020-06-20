@@ -1,111 +1,127 @@
 // variables to grab items from page
 var timerEl = document.getElementById("countdown");
-var beginButton = document.querySelector("#start")
 var scores = document.getElementById("scores");
 var main = document.querySelector("#main");
 var submit = document.getElementById("submit");
 var itemIdCounter = 0;
+var timeLeft = 60;
+var currentAnswer = ''
+var lastAnswer = '';
 
 
 var highScores = [];
 
 // question list
-var questions = [
-    { 
-    title: "The framework of a webpage is...", 
-    options: ["Javascript", "Cascading Style Sheets", "HTML", "Index"],
-    answer: "HTML"
-    },
-    { 
-    title: "Which of these is a true false statement?",
-    options: ["Strings", "Booleans", "Integers", "Events"],
-    answer: "Booleans"
+var questionsArray = [
+    {
+        title: "The framework of a webpage is...",
+        options: ["Javascript", "Cascading Style Sheets", "HTML", "Index"],
+        answer: "HTML"
     },
     {
-    title: "A standard method of styling a website is NOT...",
-    options: ["Javascript Functions", "Classes", "Cascading Style Sheets", "Elemnt IDs"],
-    answer: "Javascript Functions"
+        title: "Which of these is a true false statement?",
+        options: ["Strings", "Booleans", "Integers", "Events"],
+        answer: "Booleans"
     },
     {
-    title: "Developers use this tool in a browser to check the functionality and bugs of their code...",
-    options: ["Settings", "Development Extension","Functions","Development Tools"],
-    answer: "Development Tools"
+        title: "A standard method of styling a website is NOT...",
+        options: ["Javascript Functions", "Classes", "Cascading Style Sheets", "Elemnt IDs"],
+        answer: "Javascript Functions"
     },
     {
-    title: "An industry standard for saving and tracking progress on a codebase...",
-    options: ["Google Chrome", "Git", "Ubuntu", "Budgie"],
-    answer: "Git"    
+        title: "Developers use this tool in a browser to check the functionality and bugs of their code...",
+        options: ["Settings", "Development Extension", "Functions", "Development Tools"],
+        answer: "Development Tools"
+    },
+    {
+        title: "An industry standard for saving and tracking progress on a codebase...",
+        options: ["Google Chrome", "Git", "Ubuntu", "Budgie"],
+        answer: "Git"
     },
 ]
 
 var questionDisplay = document.getElementById("questions");
 var questionsIndex = 0;
+var currentPage = null
 
 
 // Page Load function to display initial screen
-startUp = function() {
+startUp = function () {
 
     var initialContainerEl = document.createElement("div");
     initialContainerEl.className = "container";
-    initialContainerEl.setAttribute("content-id" , itemIdCounter);
+    initialContainerEl.setAttribute("content-id", itemIdCounter);
     initialContainerEl.innerHTML = "<h2 class='title'>" + "Coding Knowledge Quiz" + "</h2>" + "<p>" + "Your goal is to answer the following code-related questions within the time limit. Incorrect answers will penalize you ten seconds/points!" + "</p>" + "<button id='start' class='btn' type='button'>" + "Start Quiz!" + "</button>";
-    main.appendChild(initialContainerEl);
-    
+    currentPage = initialContainerEl;
+    main.appendChild(currentPage);
+    var beginButton = document.querySelector("#start")
+    beginButton.onclick = function () {
+        quiz();
+    }
 }
 
-getQuestions = function() {
-    var currentTitle = questions[questionIndex]
+getQuestion = function () {
+    var currentQuestion = questionsArray[questionIndex]
     var displayTitle = document.getElementById("question")
     var displayOptions = document.getElementById("options")
-    displayTitle.textContent = currentTitle.title
-    //displayOptions.textContent = currentTitle.options
-    currentTitle.options.forEach(function(option, i){
+    displayTitle.textContent = currentQuestion.title
+    displayOptions.textContent = currentQuestion.options
+    currentQuestion.options.forEach(function (option, i) {
         var choiceEl = document.createElement("button")
         choiceEl.setAttribute("class", "option")
         choiceEl.setAttribute("value", option)
         choiceEl.textContent = option
-        questionsSection.appendChild(choiceEl)
+        main.appendChild(choiceEl)
+        //set onclick event which sets currentanswer to the text of the button that was clicked
     })
 }
 
 
 //quiz function to display questions
-quiz = function() {
-    var itemId = initialContainerEl.getAttribute("content-id");
-    var contentSelected = document.querySelector(".container[content-id='" + itemId + "']");
-    contentSelected.remove();
-
-    changeQuestions();
-    
-}
-
-function changeQuestions() {
+quiz = function () {
+    countdown();
+    currentPage.remove();
     questionsIndex++;
-    getQuestions();
+    for (i = 0; i < questionsArray.length; i++) {
+        questionIndex = i;
+        getQuestion();
+
+    }
 
 }
 
 //countdown function
 function countdown() {
-    var timeLeft = 60;
+
 
     //time loop 
-    var timer = setInterval(function(){
-        timeLeft = timeLeft-1;
+    var timer = setInterval(fu  nction(){
+        timeLeft = timeLeft - 1;
         timerEl.textContent = "Time: " + timeLeft;
-        var points = timeLeft
-        if (timeLeft <= 0) {
+        if(timeLeft <= 0) {
             score();
-            return points
-        }
-    },1000)
+}
+     }, 1000)
 }
 
-score = function() {
+score = function () {
     var finalContainerEl = document.createElement("div");
     finalContainerEl.className = "container";
     finalContainerEl.innerHTML = "<h2 class='title'>" + "Finished!" + "</h2>" + "<p>" + "Your final score is " + points + "!" + "</p>" + "<form id='score-form'>" + "<div class='form-group'>" + "<input type='text' name='player-score' class='text-input' placeholder='Your Initials' />" + "<button id='submit' class='btn' type='submit'>" + "Submit Score!" + "</button>" + "</div>";
     main.appendChild(finalContainerEl);
+}
+
+function handleQuestion() {
+    var correctAnswer = false;
+    
+    while (!correctAnswer) {
+        if (currentAnswer = questionsArray[questionsIndex].answer) {
+            var correctAnswer = true;
+        } elseif(lastAnswer === currentAnswer) {
+            //put in incorrect answer logic
+            lastAnswer = currentAnswer
+        }
+    }
 }
 
 // Need to create function to store scores
@@ -121,7 +137,6 @@ score = function() {
 
 // }
 
-main.addEventListener("load", startUp()); 
-beginButton.onclick = quiz(),countdown();
+main.addEventListener("load", startUp());
 // submit.onclick = checkScore();
 
