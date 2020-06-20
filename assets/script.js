@@ -26,6 +26,15 @@ var questions = [
     },
 ]
 
+// Page Load function to display initial screen
+startUp = function() {
+
+    var initialContainerEl = document.createElement("div");
+    initialContainerEl.className = "container";
+    initialContainerEl.innerHTML = "<h2 class='title'>" + "Coding Knowledge Quiz" + "</h2>" + "<p>" + "Your goal is to answer the following code-related questions within the time limit. Incorrect answers will penalize you ten seconds/points!" + "</p>" + "<button id='start' class='btn' type='button'>" + "Start Quiz!" + "</button>";
+    main.appendChild(initialContainerEl);
+}
+
 //countdown function
 function countdown() {
     var timeLeft = 60;
@@ -45,7 +54,7 @@ function countdown() {
 score = function() {
     var finalContainerEl = document.createElement("div");
     finalContainerEl.className = "container";
-    finalContainerEl.innerHTML = "<h2 class='title'>" + "Finished!" + "</h2>" + "<p>" + "Your final score is " + points + "!" + "</p>" + "<form id='score-form'>" + "<div class='form-group'>" + "<input type='text' name='player-score' class='text-input' placeholder='Your Initials' />" + "<button id='submit' class='btn' type='submit'>" + "Submit Score!" + "</button>" + "</div>"
+    finalContainerEl.innerHTML = "<h2 class='title'>" + "Finished!" + "</h2>" + "<p>" + "Your final score is " + points + "!" + "</p>" + "<form id='score-form'>" + "<div class='form-group'>" + "<input type='text' name='player-score' class='text-input' placeholder='Your Initials' />" + "<button id='submit' class='btn' type='submit'>" + "Submit Score!" + "</button>" + "</div>";
     main.appendChild(finalContainerEl);
 }
 
