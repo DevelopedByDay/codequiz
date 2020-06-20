@@ -1,6 +1,6 @@
 // variables to grab items from page
 var timerEl = document.getElementById("countdown");
-var begin = document.getElementById("start");
+var beginButton = document.querySelector("#start")
 var scores = document.getElementById("scores");
 var main = document.querySelector("#main");
 var submit = document.getElementById("submit");
@@ -11,22 +11,36 @@ var highScores = [];
 
 // question list
 var questions = [
-    {
-
+    { 
+    title: "The framework of a webpage is...", 
+    options: ["Javascript", "Cascading Style Sheets", "HTML", "Index"],
+    answer: "HTML"
+    },
+    { 
+    title: "Which of these is a true false statement?",
+    options: ["Strings", "Booleans", "Integers", "Events"],
+    answer: "Booleans"
     },
     {
-
+    title: "A standard method of styling a website is NOT...",
+    options: ["Javascript Functions", "Classes", "Cascading Style Sheets", "Elemnt IDs"],
+    answer: "Javascript Functions"
     },
     {
-
+    title: "Developers use this tool in a browser to check the functionality and bugs of their code...",
+    options: ["Settings", "Development Extension","Functions","Development Tools"],
+    answer: "Development Tools"
     },
     {
-
-    },
-    {
-
+    title: "An industry standard for saving and tracking progress on a codebase...",
+    options: ["Google Chrome", "Git", "Ubuntu", "Budgie"],
+    answer: "Git"    
     },
 ]
+
+var questionDisplay = document.getElementById("questions");
+var questionsIndex = 0;
+
 
 // Page Load function to display initial screen
 startUp = function() {
@@ -39,6 +53,20 @@ startUp = function() {
     
 }
 
+getQuestions = function() {
+    var currentTitle = questions[questionIndex]
+    var displayTitle = document.getElementById("question")
+    var displayOptions = document.getElementById("options")
+    displayTitle.textContent = currentTitle.title
+    //displayOptions.textContent = currentTitle.options
+    currentTitle.options.forEach(function(option, i){
+        var choiceEl = document.createElement("button")
+        choiceEl.setAttribute("class", "option")
+        choiceEl.setAttribute("value", option)
+        choiceEl.textContent = option
+        questionsSection.appendChild(choiceEl)
+    })
+}
 
 
 //quiz function to display questions
@@ -46,6 +74,15 @@ quiz = function() {
     var itemId = initialContainerEl.getAttribute("content-id");
     var contentSelected = document.querySelector(".container[content-id='" + itemId + "']");
     contentSelected.remove();
+
+    changeQuestions();
+    
+}
+
+function changeQuestions() {
+    questionsIndex++;
+    getQuestions();
+
 }
 
 //countdown function
@@ -84,8 +121,7 @@ score = function() {
 
 // }
 
-
 main.addEventListener("load", startUp()); 
-// begin.onclick = countdown,quiz();
+beginButton.onclick = quiz(),countdown();
 // submit.onclick = checkScore();
 
