@@ -13,8 +13,13 @@ var highScores = [];
 // question list
 var questionsArray = [
     {
-        title: "The framework of a webpage is...",
-        options: ["Javascript", "Cascading Style Sheets", "HTML", "Index"],
+        title: "<h2 id=title>" + "The framework of a webpage is..." + "/h2>",
+        options: [
+            "<ul id=options>" + "<li>" + "<button id='one' class='btn' type='button'>" + "Javascript" + "</button>" + "</li>", 
+            "<li>" + "<button id='two' class='btn' type='button'>" + "Cascading Style Sheets" + "</button>" + "</li>", 
+            "<li>" + "<button id='three' class='btn' type='button'>" + "HTML" + "</button>" + "</li>", 
+            "<li>" + "<button id='four' class='btn' type='button'>" + "Index" + "</button>" + "</li>", 
+        ],
         answer: "HTML"
     },
     {
@@ -50,7 +55,7 @@ startUp = function () {
     var initialContainerEl = document.createElement("div");
     initialContainerEl.className = "container";
     initialContainerEl.setAttribute("content-id", itemIdCounter);
-    initialContainerEl.innerHTML = "<h2 class='title'>" + "Coding Knowledge Quiz" + "</h2>" + "<p>" + "Your goal is to answer the following code-related questions within the time limit. Incorrect answers will penalize you ten seconds/points!" + "</p>" + "<button id='start' class='btn' type='button'>" + "Start Quiz!" + "</button>";
+    initialContainerEl.innerHTML = "<h2 id='title'>" + "Coding Knowledge Quiz" + "</h2>" + "<p>" + "Your goal is to answer the following code-related questions within the time limit. Incorrect answers will penalize you ten seconds/points!" + "</p>" + "<button id='start' class='btn' type='button'>" + "Start Quiz!" + "</button>";
     currentPage = initialContainerEl;
     main.appendChild(currentPage);
     var beginButton = document.querySelector("#start")
@@ -58,24 +63,6 @@ startUp = function () {
         quiz();
     }
 }
-
-getQuestion = function () {
-    var currentQuestion = questionsArray[questionIndex]
-    var displayTitle = document.getElementById("question")
-    var displayOptions = document.getElementById("options")
-    displayTitle.textContent = currentQuestion.title
-    displayOptions.textContent = currentQuestion.options
-    currentQuestion.options.forEach(function (option, i) {
-        var choiceEl = document.createElement("button")
-        choiceEl.setAttribute("class", "option")
-        choiceEl.setAttribute("value", option)
-        choiceEl.textContent = option
-        main.appendChild(choiceEl)
-        handleQuestion();
-        //set onclick event which sets currentanswer to the text of the button that was clicked
-    })
-}
-
 
 //quiz function to display questions
 quiz = function () {
@@ -102,16 +89,34 @@ function countdown() {
             score();
         }
     }, 1000);
-}    
+}  
 
-score = function () {
-    var finalContainerEl = document.createElement("div");
-    finalContainerEl.className = "container";
-    finalContainerEl.innerHTML = "<h2 class='title'>" + "Finished!" + "</h2>" + "<p>" + "Your final score is " + timeLeft + "!" + "</p>" + "<form id='score-form'>" + "<div class='form-group'>" + "<input type='text' name='player-score' class='text-input' placeholder='Your Initials' />" + "<button id='submit' class='btn' type='submit'>" + "Submit Score!" + "</button>" + "</div>";
-    main.appendChild(finalContainerEl);
-    var submit = document.getElementById("submit");
-    submit.onclick = checkScore();
-
+getQuestion = function () {
+    var currentQuestion = questionsArray[questionIndex]
+    var displayTitle = document.getElementById("question")
+    var displayOptions = document.getElementById("options")
+    var displayQuestion = document.createElement("div")
+    // displayQuestion.innerHTML = displayTitle + displayOptions;
+    // for (i = 0; i<questionsIndex; i++)
+    //     displayTitle = currentQuestion.title;
+    //     displayOptions = currentQuestion.options;
+    //     var displayCurrentTitle = displayTitle;
+    //     var dispalyCurrentOptions = displayOptions;
+    //     displayQuestion.innerHTML = displayCurrentTitle + dispalyCurrentOptions;
+    //     currentPage = displayQuestion;
+    //     main.appendChild(currentPage);
+    //     handleQuestion;
+        // set onclick event to capture selected 
+    // currentQuestion.options.forEach(function (option, i) {
+    //     var choiceEl = document.createElement("button")
+    //     choiceEl.setAttribute("class", "option")
+    //     choiceEl.setAttribute("value", option)
+    //     choiceEl.textContent = JSON.stringifystringify(displayOptions);
+    //     currentPage = choiceEl;
+    //     main.appendChild(currentPage);
+    //     handleQuestion();
+        //set onclick event which sets currentanswer to the text of the button that was clicked
+    // })
 }
 
 function handleQuestion() {
@@ -130,7 +135,21 @@ function handleQuestion() {
             timeLeft = timeLeft -10;
         }
     }
+}  
+
+score = function () {
+    currentPage.remove();
+    var finalContainerEl = document.createElement("div");
+    finalContainerEl.className = "container";
+    finalContainerEl.innerHTML = "<h2 class='title'>" + "Finished!" + "</h2>" + "<p>" + "Your final score is " + timeLeft + "!" + "</p>" + "<form id='score-form'>" + "<div class='form-group'>" + "<input type='text' name='player-score' class='text-input' placeholder='Your Initials' />" + "<button id='submit' class='btn' type='submit'>" + "Submit Score!" + "</button>" + "</div>";
+    finalContainerEl = currentPage;
+    main.appendChild(currentPage);
+    var submit = document.querySelector("#submit")
+    submit.onclick = checkScore();
+
 }
+
+
 
 // Need to create function to store scores
 // checkScore = function() {
