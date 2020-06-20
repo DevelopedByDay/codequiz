@@ -2,7 +2,6 @@
 var timerEl = document.getElementById("countdown");
 var scores = document.getElementById("scores");
 var main = document.querySelector("#main");
-var submit = document.getElementById("submit");
 var itemIdCounter = 0;
 var timeLeft = 60;
 var currentAnswer = ''
@@ -72,6 +71,7 @@ getQuestion = function () {
         choiceEl.setAttribute("value", option)
         choiceEl.textContent = option
         main.appendChild(choiceEl)
+        handleQuestion();
         //set onclick event which sets currentanswer to the text of the button that was clicked
     })
 }
@@ -95,20 +95,23 @@ function countdown() {
 
 
     //time loop 
-    var timer = setInterval(fu  nction(){
+    var timer = setInterval(function( ){
         timeLeft = timeLeft - 1;
         timerEl.textContent = "Time: " + timeLeft;
         if(timeLeft <= 0) {
             score();
-}
-     }, 1000)
-}
+        }
+    }, 1000);
+}    
 
 score = function () {
     var finalContainerEl = document.createElement("div");
     finalContainerEl.className = "container";
-    finalContainerEl.innerHTML = "<h2 class='title'>" + "Finished!" + "</h2>" + "<p>" + "Your final score is " + points + "!" + "</p>" + "<form id='score-form'>" + "<div class='form-group'>" + "<input type='text' name='player-score' class='text-input' placeholder='Your Initials' />" + "<button id='submit' class='btn' type='submit'>" + "Submit Score!" + "</button>" + "</div>";
+    finalContainerEl.innerHTML = "<h2 class='title'>" + "Finished!" + "</h2>" + "<p>" + "Your final score is " + timeLeft + "!" + "</p>" + "<form id='score-form'>" + "<div class='form-group'>" + "<input type='text' name='player-score' class='text-input' placeholder='Your Initials' />" + "<button id='submit' class='btn' type='submit'>" + "Submit Score!" + "</button>" + "</div>";
     main.appendChild(finalContainerEl);
+    var submit = document.getElementById("submit");
+    submit.onclick = checkScore();
+
 }
 
 function handleQuestion() {
@@ -116,10 +119,15 @@ function handleQuestion() {
     
     while (!correctAnswer) {
         if (currentAnswer = questionsArray[questionsIndex].answer) {
-            var correctAnswer = true;
-        } elseif(lastAnswer === currentAnswer) {
-            //put in incorrect answer logic
-            lastAnswer = currentAnswer
+            lastAnswer = currentAnswer;
+            correctAnswer = true; 
+        } 
+        else if(lastAnswer === currentAnswer) {
+            lastAnswer = currentAnswer;
+        }
+        else if(currentAnswer === !questionsArray[questionsIndex].answer) {
+            lastAnswer = currentAnswer;
+            timeLeft = timeLeft -10;
         }
     }
 }
@@ -138,5 +146,4 @@ function handleQuestion() {
 // }
 
 main.addEventListener("load", startUp());
-// submit.onclick = checkScore();
 
