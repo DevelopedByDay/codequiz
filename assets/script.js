@@ -4,6 +4,8 @@ var begin = document.getElementById("start");
 var scores = document.getElementById("scores");
 var main = document.querySelector("#main");
 var submit = document.getElementById("submit");
+var itemIdCounter = 0;
+
 
 var highScores = [];
 
@@ -31,8 +33,19 @@ startUp = function() {
 
     var initialContainerEl = document.createElement("div");
     initialContainerEl.className = "container";
+    initialContainerEl.setAttribute("content-id" , itemIdCounter);
     initialContainerEl.innerHTML = "<h2 class='title'>" + "Coding Knowledge Quiz" + "</h2>" + "<p>" + "Your goal is to answer the following code-related questions within the time limit. Incorrect answers will penalize you ten seconds/points!" + "</p>" + "<button id='start' class='btn' type='button'>" + "Start Quiz!" + "</button>";
     main.appendChild(initialContainerEl);
+    
+}
+
+
+
+//quiz function to display questions
+quiz = function() {
+    var itemId = initialContainerEl.getAttribute("content-id");
+    var contentSelected = document.querySelector(".container[content-id='" + itemId + "']");
+    contentSelected.remove();
 }
 
 //countdown function
@@ -73,6 +86,6 @@ score = function() {
 
 
 main.addEventListener("load", startUp()); 
-begin.onclick = countdown,quiz();
-submit.onclick = checkScore();
+// begin.onclick = countdown,quiz();
+// submit.onclick = checkScore();
 
