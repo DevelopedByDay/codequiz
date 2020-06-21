@@ -1,6 +1,5 @@
 // variables to grab items from page
-var timerEl = document.getElementById("countdown");
-var scores = document.getElementById("scores");
+var timerEl = document.getElementById("countdown")
 var main = document.querySelector("#main");
 var itemIdCounter = 0;
 var timeLeft = 60;
@@ -175,13 +174,13 @@ score =  function() {
 checkScore = function(e) {
     event.preventDefault();
     incorrectMessage.style.display = "none"
-    var scores =  JSON.parse(localStorage.getItem("highScores"))
+    highScores =  JSON.parse(localStorage.getItem("highScores"))
     var playerName = document.querySelector("input[name='player-score']").value;
 
-    if (!scores) {
-        scores = {}
-        scores[playerName] = timeLeft
-        scores = localStorage.setItem("highScores", JSON.stringify(scores))
+    if (!highScores) {
+        highScores = {}
+        highScores[playerName] = timeLeft
+        highScores = localStorage.setItem("highScores", JSON.stringify(scores))
     }
     else {
         highScores.push({playerName : timeLeft});
@@ -190,7 +189,7 @@ checkScore = function(e) {
         // scoresSorted = Object.keys(scores).sort(function(a,b){return scores[a]-scores[b]})
         // console.log(scoresSorted); 
         
-        if(scores.length > 3) {
+        if(highScores.length > 3) {
 
         }
         
