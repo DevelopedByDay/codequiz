@@ -10,7 +10,7 @@ var scoreScreen = document.getElementById("player-score")
 var leaderBoard = document.getElementById("high-scores")
 var leader = document.querySelector("#scores")
 
-var highScores = [];
+var highScores = JSON.parse(localStorage.getItem("highScores") || "[]");
 
 // question list
 var questionsArray = [
@@ -175,27 +175,49 @@ score =  function() {
 checkScore = function(e) {
     event.preventDefault();
     incorrectMessage.style.display = "none"
-    highScores =  JSON.parse(localStorage.getItem("highScores"))
-    var playerName = document.querySelector("input[name='player-score']").value;
-
-    if (!highScores) {
-        highScores = {}
-        highScores[playerName] = timeLeft
-        highScores = localStorage.setItem("highScores", JSON.stringify(scores))
-    }
-    else {
-        highScores.push({playerName : timeLeft});
-
-        // var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
-        // scoresSorted = Object.keys(scores).sort(function(a,b){return scores[a]-scores[b]})
-        // console.log(scoresSorted); 
         
-        if(highScores.length > 3) {
-
-        }
-        
+    var playerScore = {
+        name: document.querySelector("input[name='player-score']").value,
+        score: timeLeft
     }
+
+    highScores.push(playerScore);
+
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+
     displayScore() 
+
+    /*
+{
+    [
+        {
+            'name': 'Someone',
+            'score': 24
+        },
+        {
+            'name': 'Other Dude',
+            'score': 27
+        }
+    ]
+}
+    */
+    // if (!highScores) {
+    //     highScores = [{}]
+    //     highScores[playerName] = timeLeft
+    //     localStorage.setItem("highScores", JSON.stringify(highScores))
+    // }
+    // else {
+    //     highScores.push({playerName : timeLeft});
+
+    //     // var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
+    //     // scoresSorted = Object.keys(scores).sort(function(a,b){return scores[a]-scores[b]})
+    //     // console.log(scoresSorted); 
+        
+    //     if (highScores.length > 3) {
+
+    //     }
+        
+    // }
 }
 
 var displayScore = function () {
@@ -203,7 +225,7 @@ var displayScore = function () {
     scoreScreen.style.display = "none"
     leaderBoard.style.display = "block"
     var leaderList = document.getElementById("score-list")
-    leaderList.innerHTML = "1 " + highScores[0] + "<br>" + "2 " + highScores[1] + "<br>" + "3 " + highScores[2];
+    leaderList.innerHTML = `1: ${highScores[0].name} (${highScores[0].score}) <br> 2: ${highScores[1].name} (${highScores[1].score}) <br> 3: ${highScores[2].name} (${highScores[2].score})`
     
 }
         
