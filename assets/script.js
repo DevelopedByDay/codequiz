@@ -10,7 +10,7 @@ var scoreScreen = document.getElementById("player-score")
 var leaderBoard = document.getElementById("high-scores")
 var leader = document.querySelector("#scores")
 
-var highScores = JSON.parse(localStorage.getItem("highScores") || "[]");
+var highScores = JSON.parse(localStorage.getItem("highScores") || '[{"name": "Punk","score": 3},{"name": "Chump","score": 2},{"name": "Joe", "score": 1}]');
 
 // question list
 var questionsArray = [
@@ -196,7 +196,6 @@ function displayScore() {
     leaderBoard.style.display = "block"
     var leaderList = document.getElementById("score-list")
     leaderList.innerHTML = `1: ${highScores[0].name} (${highScores[0].score}) <br> 2: ${highScores[1].name} (${highScores[1].score}) <br> 3: ${highScores[2].name} (${highScores[2].score})`
-    
 }
         
 
