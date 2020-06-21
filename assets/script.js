@@ -44,14 +44,16 @@ var questionDisplay = document.getElementById("questions");
 var questionsIndex = 0;
 var currentPage = null
 var correctAnswer = ""
-var displayTitle = null
-var choiceEl = null
+var displayTitle = ""
+var choiceEl = ""
+var displayOptions = ""
+var initialContainerEl = ""
 
 
 // Page Load function to display initial screen
 startUp = function () {
 
-    var initialContainerEl = document.createElement("div");
+    initialContainerEl = document.createElement("div");
     initialContainerEl.className = "container";
     initialContainerEl.setAttribute("content-id", itemIdCounter);
     initialContainerEl.innerHTML = "<h2 id='title'>" + "Coding Knowledge Quiz" + "</h2>" + "<p>" + "Your goal is to answer the following code-related questions within the time limit. Incorrect answers will penalize you ten seconds/points!" + "</p>" + "<button id='start' class='btn' type='button'>" + "Start Quiz!" + "</button>";
@@ -72,31 +74,33 @@ quiz = function () {
 
 
 //countdown function
-function countdown() {
-    timer
-    
+var countdown = function() {
+    var timer = setInterval(function( ){
+        timeLeft = timeLeft - 1;
+        timerEl.textContent = "Time: " + timeLeft;
+        if(timeLeft <= 0) {
+            clearInterval(timer);
+            timeLeft = 0;
+            score();
+        }
+        else if (questionsIndex > 4) {
+            
+            clearInterval(timer);
+        }
+    }, 1000);
 }  
 
-var timer = setInterval(function( ){
-    timeLeft = timeLeft - 1;
-    timerEl.textContent = "Time: " + timeLeft;
-    if(timeLeft <= 0) {
-        clearInterval(timer);
-        timeLeft = 0;
-        score();
-    }
-}, 1000);
+
 
 
 // display question 
 function getQuestion(questionsIndex) {
     if (questionsIndex <= 4) {
         console.log(questionsIndex);
-        currentPage.remove();
-        displayOptions = null
+        displayOptions.innerHTML = ""
         var currentQuestion = questionsArray[questionsIndex]
         displayTitle = document.getElementById("title")
-        var displayOptions = document.getElementById("options")
+        displayOptions = document.getElementById("options")
         displayOptions.addEventListener("click", handleQuestion);
         correctAnswer = currentQuestion.answer
         displayTitle.textContent = currentQuestion.title
@@ -111,6 +115,7 @@ function getQuestion(questionsIndex) {
             choiceEl.textContent = option
             currentPage = choiceEl
             displayOptions.appendChild(currentPage); 
+
         })
 
             
@@ -118,7 +123,6 @@ function getQuestion(questionsIndex) {
     }
     else {
         localStorage.setItem("score", JSON.stringify(timeLeft));
-        clearInterval(timer);
         score();
     }
         
@@ -150,9 +154,8 @@ var incorrectToggle = function () {
 
 // for displaying current score
 score = function () {
-    main.remove();
-    displayTitle = null
-    choiceEl = null
+    displayOptions.innerHTML = ""
+    displayTitle.innerHTML = ""
     var finalContainerEl = document.createElement("div");
     finalContainerEl.className = "container";
     finalContainerEl.innerHTML = "<h2 class='title'>" + "Finished!" + "</h2>" + "<p>" + "Your final score is " + timeLeft + "!" + "</p>" + "<form id='score-form'>" + "<div class='form-group'>" + "<input type='text' name='player-score' class='text-input' placeholder='Your Initials' />" + "<button id='submit' class='btn' type='submit'>" + "Submit Score!" + "</button>" + "</div>";
