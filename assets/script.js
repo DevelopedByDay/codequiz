@@ -7,7 +7,8 @@ var timeLeft = 60;
 var currentAnswer = ''
 // var lastAnswer = '';
 var incorrectMessage = document.getElementById("incorrect")
-
+var scoreScreen = document.getElementById("player-score")
+var leaderBoard = document.getElementById("high-scores")
 
 var highScores = [];
 
@@ -123,6 +124,8 @@ function getQuestion(questionsIndex) {
     }
     else {
         localStorage.setItem("score", JSON.stringify(timeLeft));
+        displayOptions.innerHTML = ""
+        displayTitle.innerHTML = ""
         score();
     }
         
@@ -153,32 +156,55 @@ var incorrectToggle = function () {
 }
 
 // for displaying current score
-score = function () {
-    displayOptions.innerHTML = ""
-    displayTitle.innerHTML = ""
-    var finalContainerEl = document.createElement("div");
-    finalContainerEl.className = "container";
-    finalContainerEl.innerHTML = "<h2 class='title'>" + "Finished!" + "</h2>" + "<p>" + "Your final score is " + timeLeft + "!" + "</p>" + "<form id='score-form'>" + "<div class='form-group'>" + "<input type='text' name='player-score' class='text-input' placeholder='Your Initials' />" + "<button id='submit' class='btn' type='submit'>" + "Submit Score!" + "</button>" + "</div>";
+score =  function() {
+    scoreScreen.style.display = "block"
+    var finalContainerEl = document.getElementById("p-score")
+    finalContainerEl.innerHTML =  "Your final score is " + timeLeft + "!" 
     finalContainerEl = currentPage;
-    main.appendChild(currentPage);
-    currentPage.addEventListener("click", checkScore);
+    var submitScore = document.querySelector("#submit");
+    submitScore.onclick = function () {
+        checkScore();
+    }
+    
 
 }
 
 
 
 // Need to create function to store scores
-checkScore = function() {
+checkScore = function(e) {
     event.preventDefault();
+    var scores =  JSON.parse(localStorage.getItem("highScores"))
     var playerName = document.querySelector("input[name='player-score']").value;
-    for (var i= o; i<highScores.length; i++)
-        if (points > highScores[0]) {
-            localStorage.setItem("points", JSON.stringify(highScores[0]));
-            displayScore()
-        }
-        
 
+    if (!scores) {
+        scores = {}
+        scores[playerName] = timeLeft
+        scores = localStorage.setItem("highScores", JSON.stringify(scores))
+    }
+    // else {
+    //     scores.push({{playerName}: timeLeft});
+
+    //     var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
+    //     scoresSorted = Object.keys(scores).sort(function(a,b){return scores[a]-scores[b]})
+    //     console.log(scoresSorted); 
+        
+    //     if(scores.length > 3) {
+
+    //     }
+    //     
+    // }
+    displayScore() 
 }
+
+var displayScore = function () {
+    currentPage.remove();
+    leaderBoard.style.display = "block"
+    var leaderList = document.getElementById("score-list")
+    leaderList.innerHTML = "1 " + highScores[0] + "<br>" + "2 " + highScores[1] + "<br>" + "3 " + highScores[2];
+    
+}
+        
 
 main.addEventListener("load", startUp());
 
