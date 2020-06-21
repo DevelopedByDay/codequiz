@@ -183,44 +183,14 @@ checkScore = function(e) {
 
     highScores.push(playerScore);
 
+    highScores.sort((a, b) => (a.score < b.score) ? 1 : -1);
+
     localStorage.setItem("highScores", JSON.stringify(highScores));
 
     displayScore() 
-
-    /*
-{
-    [
-        {
-            'name': 'Someone',
-            'score': 24
-        },
-        {
-            'name': 'Other Dude',
-            'score': 27
-        }
-    ]
-}
-    */
-    // if (!highScores) {
-    //     highScores = [{}]
-    //     highScores[playerName] = timeLeft
-    //     localStorage.setItem("highScores", JSON.stringify(highScores))
-    // }
-    // else {
-    //     highScores.push({playerName : timeLeft});
-
-    //     // var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
-    //     // scoresSorted = Object.keys(scores).sort(function(a,b){return scores[a]-scores[b]})
-    //     // console.log(scoresSorted); 
-        
-    //     if (highScores.length > 3) {
-
-    //     }
-        
-    // }
 }
 
-var displayScore = function () {
+function displayScore() {
     currentPage.remove();
     scoreScreen.style.display = "none"
     leaderBoard.style.display = "block"
