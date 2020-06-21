@@ -8,6 +8,7 @@ var currentAnswer = ''
 var incorrectMessage = document.getElementById("incorrect")
 var scoreScreen = document.getElementById("player-score")
 var leaderBoard = document.getElementById("high-scores")
+var leader = document.querySelector("#scores")
 
 var highScores = [];
 
@@ -198,6 +199,7 @@ checkScore = function(e) {
 }
 
 var displayScore = function () {
+    currentPage.remove();
     scoreScreen.style.display = "none"
     leaderBoard.style.display = "block"
     var leaderList = document.getElementById("score-list")
@@ -207,4 +209,6 @@ var displayScore = function () {
         
 
 main.addEventListener("load", startUp());
-
+leader.onclick = function() {
+    displayScore();
+}
