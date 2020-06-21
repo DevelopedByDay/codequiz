@@ -2,7 +2,7 @@
     font-size: 15px;
     border: none;
     background: none;
-    text-align: left;
+    text-align: center;
     outline: none;
     color: blueviolet;
 }
@@ -21,13 +21,20 @@
     display: flex;
     flex-direction: column;
     align-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+p,.text-input {
+    align-items: center;
+    text-align: center;
 }
 
 .title {
-    display: flex;
     font-weight: bold;
     font-size: 35px;
-    text-align: left;
+    text-align: center;
 }
 
 .btn {
@@ -37,9 +44,10 @@
     color: white;
     text-decoration: none;
     list-style: none;
-    text-align: left;
-    align-items: left;
-    width: 50%;
+    text-align: center;
+    align-items: center;
+    width: 25%;
+    font-size: 25px;
 
 }
 
@@ -51,8 +59,9 @@
     text-decoration: none;
     list-style: none;
     text-align: left;
-    align-items: left;
+    align-items: center;
     font-size: 20px;
+    margin: 10px;
 }
 
 #incorrect {
@@ -66,3 +75,12 @@
 #high-scores {
     display: none;
 }
+
+.form-group  {
+   display: block;
+}
+
+.form-group .btn {
+    width: 50%;
+}
+
