@@ -17,7 +17,21 @@
     font-size: 20px;
 }
 
-#start,#question-items,#submit {
+.container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    
+}
+
+.title {
+    display: flex;
+    font-weight: bold;
+    font-size: 35px;
+    text-align: left;
+}
+
+.btn {
     border: none;
     outline: invert;
     background-color: blueviolet;
@@ -26,5 +40,22 @@
     list-style: none;
     text-align: left;
     align-items: left;
+    width: 50%;
 
+}
+
+.questions {
+    border: 3px;
+    border-color: black;
+    background-color: blueviolet;
+    color: white;
+    text-decoration: none;
+    list-style: none;
+    text-align: left;
+    align-items: left;
+    font-size: 20px;
+}
+
+#incorrect {
+    display: none;
 }

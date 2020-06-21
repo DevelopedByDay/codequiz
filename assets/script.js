@@ -5,7 +5,8 @@ var main = document.querySelector("#main");
 var itemIdCounter = 0;
 var timeLeft = 60;
 var currentAnswer = ''
-var lastAnswer = '';
+// var lastAnswer = '';
+var incorrectMessage = document.getElementById("incorrect")
 
 
 var highScores = [];
@@ -13,13 +14,8 @@ var highScores = [];
 // question list
 var questionsArray = [
     {
-        title: "<h2 id=title>" + "The framework of a webpage is..." + "/h2>",
-        options: [
-            "<ul id=options>" + "<li>" + "<button id='one' class='btn' type='button'>" + "Javascript" + "</button>" + "</li>", 
-            "<li>" + "<button id='two' class='btn' type='button'>" + "Cascading Style Sheets" + "</button>" + "</li>", 
-            "<li>" + "<button id='three' class='btn' type='button'>" + "HTML" + "</button>" + "</li>", 
-            "<li>" + "<button id='four' class='btn' type='button'>" + "Index" + "</button>" + "</li>", 
-        ],
+        title: "The framework of a webpage is...",
+        options: ["Javascript","HTML","Cascading Style Sheets","Index"],
         answer: "HTML"
     },
     {
@@ -47,6 +43,9 @@ var questionsArray = [
 var questionDisplay = document.getElementById("questions");
 var questionsIndex = 0;
 var currentPage = null
+var correctAnswer = ""
+var displayTitle = null
+var choiceEl = null
 
 
 // Page Load function to display initial screen
@@ -66,103 +65,117 @@ startUp = function () {
 
 //quiz function to display questions
 quiz = function () {
-    countdown();
     currentPage.remove();
-    questionsIndex++;
-    for (i = 0; i < questionsArray.length; i++) {
-        questionIndex = i;
-        getQuestion();
-
-    }
-
+    countdown();
+    getQuestion(questionsIndex)
 }
+
 
 //countdown function
 function countdown() {
-
-
-    //time loop 
-    var timer = setInterval(function( ){
-        timeLeft = timeLeft - 1;
-        timerEl.textContent = "Time: " + timeLeft;
-        if(timeLeft <= 0) {
-            score();
-        }
-    }, 1000);
+    timer
+    
 }  
 
-getQuestion = function () {
-    var currentQuestion = questionsArray[questionIndex]
-    var displayTitle = document.getElementById("question")
-    var displayOptions = document.getElementById("options")
-    var displayQuestion = document.createElement("div")
-    // displayQuestion.innerHTML = displayTitle + displayOptions;
-    // for (i = 0; i<questionsIndex; i++)
-    //     displayTitle = currentQuestion.title;
-    //     displayOptions = currentQuestion.options;
-    //     var displayCurrentTitle = displayTitle;
-    //     var dispalyCurrentOptions = displayOptions;
-    //     displayQuestion.innerHTML = displayCurrentTitle + dispalyCurrentOptions;
-    //     currentPage = displayQuestion;
-    //     main.appendChild(currentPage);
-    //     handleQuestion;
-        // set onclick event to capture selected 
-    // currentQuestion.options.forEach(function (option, i) {
-    //     var choiceEl = document.createElement("button")
-    //     choiceEl.setAttribute("class", "option")
-    //     choiceEl.setAttribute("value", option)
-    //     choiceEl.textContent = JSON.stringifystringify(displayOptions);
-    //     currentPage = choiceEl;
-    //     main.appendChild(currentPage);
-    //     handleQuestion();
-        //set onclick event which sets currentanswer to the text of the button that was clicked
-    // })
+var timer = setInterval(function( ){
+    timeLeft = timeLeft - 1;
+    timerEl.textContent = "Time: " + timeLeft;
+    if(timeLeft <= 0) {
+        clearInterval(timer);
+        timeLeft = 0;
+        score();
+    }
+}, 1000);
+
+
+// display question 
+function getQuestion(questionsIndex) {
+    if (questionsIndex <= 4) {
+        console.log(questionsIndex);
+        currentPage.remove();
+        displayOptions = null
+        var currentQuestion = questionsArray[questionsIndex]
+        displayTitle = document.getElementById("title")
+        var displayOptions = document.getElementById("options")
+        displayOptions.addEventListener("click", handleQuestion);
+        correctAnswer = currentQuestion.answer
+        displayTitle.textContent = currentQuestion.title
+        console.log(currentQuestion);
+        console.log(questionsIndex);
+        currentQuestion.options.forEach(function(option, questionsIndex){
+            choiceEl = document.createElement("button")
+            choiceEl.setAttribute("class", "questions")
+            choiceEl.setAttribute("value", option)
+            choiceEl.setAttribute("id", "choice")
+            choiceEl.setAttribute("type", "submit")
+            choiceEl.textContent = option
+            currentPage = choiceEl
+            displayOptions.appendChild(currentPage); 
+        })
+
+            
+
+    }
+    else {
+        localStorage.setItem("score", JSON.stringify(timeLeft));
+        clearInterval(timer);
+        score();
+    }
+        
+    // score();
 }
 
-function handleQuestion() {
-    var correctAnswer = false;
-    
-    while (!correctAnswer) {
-        if (currentAnswer = questionsArray[questionsIndex].answer) {
-            lastAnswer = currentAnswer;
-            correctAnswer = true; 
-        } 
-        else if(lastAnswer === currentAnswer) {
-            lastAnswer = currentAnswer;
-        }
-        else if(currentAnswer === !questionsArray[questionsIndex].answer) {
-            lastAnswer = currentAnswer;
+// function to determine what happens based on selected answer
+function handleQuestion(e) {
+    if(e) {
+        incorrectMessage.style.display = "none"
+        currentAnswer = e.target.value
+        if (currentAnswer !== correctAnswer) {
+            incorrectToggle();
             timeLeft = timeLeft -10;
-        }
+            
+            }
+            currentAnswer = ""
+            questionsIndex = questionsIndex + 1
+            choiceEl.remove();
+            getQuestion(questionsIndex);
     }
+    
 }  
 
+// displays inccorect message
+var incorrectToggle = function () {
+    incorrectMessage.style.display = incorrectMessage.style.display === "block" ? "none" : "block"
+}
+
+// for displaying current score
 score = function () {
-    currentPage.remove();
+    main.remove();
+    displayTitle = null
+    choiceEl = null
     var finalContainerEl = document.createElement("div");
     finalContainerEl.className = "container";
     finalContainerEl.innerHTML = "<h2 class='title'>" + "Finished!" + "</h2>" + "<p>" + "Your final score is " + timeLeft + "!" + "</p>" + "<form id='score-form'>" + "<div class='form-group'>" + "<input type='text' name='player-score' class='text-input' placeholder='Your Initials' />" + "<button id='submit' class='btn' type='submit'>" + "Submit Score!" + "</button>" + "</div>";
     finalContainerEl = currentPage;
     main.appendChild(currentPage);
-    var submit = document.querySelector("#submit")
-    submit.onclick = checkScore();
+    currentPage.addEventListener("click", checkScore);
 
 }
 
 
 
 // Need to create function to store scores
-// checkScore = function() {
-//     event.preventDefault();
-//     var playerName = document.querySelector("input[name='player-score']").value;
-//     for (var i= o; i<highScores.length; i++)
-//         if (points > highScores[0]) {
-//             localStorage.setItem("points", JSON.stringify(highScores[0]));
-//             displayScore()
-//         }
-//         else 
+checkScore = function() {
+    event.preventDefault();
+    var playerName = document.querySelector("input[name='player-score']").value;
+    for (var i= o; i<highScores.length; i++)
+        if (points > highScores[0]) {
+            localStorage.setItem("points", JSON.stringify(highScores[0]));
+            displayScore()
+        }
+        
 
-// }
+}
 
 main.addEventListener("load", startUp());
 
