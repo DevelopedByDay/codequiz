@@ -171,7 +171,7 @@ score =  function() {
 
 
 
-// Need to create function to store scores
+// score storing function
 checkScore = function(e) {
     event.preventDefault();
     incorrectMessage.style.display = "none"
@@ -189,7 +189,7 @@ checkScore = function(e) {
 
     displayScore() 
 }
-
+// leaderboard function 
 function displayScore() {
     currentPage.remove();
     scoreScreen.style.display = "none"
