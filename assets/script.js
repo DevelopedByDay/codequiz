@@ -174,6 +174,7 @@ score =  function() {
 // Need to create function to store scores
 checkScore = function(e) {
     event.preventDefault();
+    incorrectMessage.style.display = "none"
     var scores =  JSON.parse(localStorage.getItem("highScores"))
     var playerName = document.querySelector("input[name='player-score']").value;
 
@@ -182,23 +183,23 @@ checkScore = function(e) {
         scores[playerName] = timeLeft
         scores = localStorage.setItem("highScores", JSON.stringify(scores))
     }
-    // else {
-    //     scores.push({{playerName}: timeLeft});
+    else {
+        highScores.push({playerName : timeLeft});
 
-    //     var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
-    //     scoresSorted = Object.keys(scores).sort(function(a,b){return scores[a]-scores[b]})
-    //     console.log(scoresSorted); 
+        // var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
+        // scoresSorted = Object.keys(scores).sort(function(a,b){return scores[a]-scores[b]})
+        // console.log(scoresSorted); 
         
-    //     if(scores.length > 3) {
+        if(scores.length > 3) {
 
-    //     }
-    //     
-    // }
+        }
+        
+    }
     displayScore() 
 }
 
 var displayScore = function () {
-    currentPage.remove();
+    scoreScreen.style.display = "none"
     leaderBoard.style.display = "block"
     var leaderList = document.getElementById("score-list")
     leaderList.innerHTML = "1 " + highScores[0] + "<br>" + "2 " + highScores[1] + "<br>" + "3 " + highScores[2];
